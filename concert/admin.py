@@ -1,5 +1,7 @@
 from django.contrib import admin
+from .models import Concert
 
 # Register your models here.
-admin.sit.register(Concert)
-from .models import Concert
+admin.site.register(Concert)
+
+

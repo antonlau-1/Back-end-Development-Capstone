@@ -60,7 +60,7 @@ def login_view(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         try:
-            user = User.objects.filter(username=username).first()
+            user = User.objects.filter(username=username)
             if user.check_password(password):
                 login(request,user)
                 return HttpResponseRedirect(reverse("index"))
@@ -75,14 +75,15 @@ def logout_view(request):
 def concerts(request):
     if request.user.is_authenticated:
         lst_of_concert = []
-        concert_object = Concert.objects.all()
-        for concert in concert_object:
+        concert_objects = Concert.objects.all()
+        for item in concert_objects:
             try:
-                status = concert.attendee.filter(user=request.user).first().attending
+                status = item.attendee.filter(
+                    user=request.user).first().attending
             except:
                 status = "-"
             lst_of_concert.append({
-                "concert":concert,
+                "concert": item,
                 "status": status
             })
         return render(request, "concerts.html", {"concerts": lst_of_concert})
